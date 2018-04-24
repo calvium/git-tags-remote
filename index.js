@@ -15,13 +15,16 @@ const parseTags = (tags) => {
 			const ref = str.split(/\t/);
 			tagMap.set(ref[1].split('/')[2].replace(/\^\{\}$/, ''), ref[0]);
 		});
-	return new Map([...tagMap.entries()]);
+	return Array.from(tagMap.keys());
 };
 
-const filterTags = (tags) => parseTags(tags)
+const filterTags = (tags) => {
+	const tagsToFilter = parseTags(tags);
+	return tagsToFilter
 		.filter(arr => semver.valid(arr[0]))
 		.sort((a, b) => semver.compare(a[0], b[0]))
 		.reverse();
+};
 
 const get = repo => new Promise((resolve, reject) => {
 	lsRemoteTags(repo)
@@ -36,8 +39,8 @@ const getAll = repo => new Promise((resolve, reject) => {
 });
 
 const latest = repo => new Promise((resolve, reject) => {
-	get(repo)
-		.then(tags => resolve(tags.entries().next().value))
+	getAll(repo)
+		.then(tags => resolve(tags.reverse()[0]))
 		.catch(err => reject(err));
 });
 

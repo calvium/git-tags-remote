@@ -6,15 +6,14 @@ const https = 'https://github.com/sh0ji/focus-rover.git';
 const invalid = 'github.com/sh0ji/focus-rover';
 
 test('public https get', async (t) => {
-	const tags = await gtr.get(https);
-	t.is(tags.get('v1.0.0-rc.1'), '48d18c388f4e0b1a963a409bfe3d8fedb3acd50a');
-	t.is(tags.get('v1.0.0-rc.2'), '8e048a0fd9cb668366eef550be445ac761efd667');
+	const tags = await gtr.getAll(https);
+	t.is(tags[0], 'v1.0.0-rc.1');
+	t.is(tags[1], 'v1.0.0-rc.2');
 });
 
 test('public https latest', async (t) => {
 	const latest = await gtr.latest(https);
-	t.is(latest[0], 'v1.0.0-rc.2');
-	t.is(latest[1], '8e048a0fd9cb668366eef550be445ac761efd667');
+	t.is(latest, 'v1.0.0-rc.2');
 });
 
 // test('private ssh get', async (t) => {
