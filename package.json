@@ -32,6 +32,6 @@
     "eslint-plugin-react": "^7.4.0"
   },
   "dependencies": {
-    "semver": "^5.4.1"
+    "semver": "5.5.0"
   }
 }
