@@ -15,13 +15,21 @@ const parseTags = (tags) => {
 			const ref = str.split(/\t/);
 			tagMap.set(ref[1].split('/')[2].replace(/\^\{\}$/, ''), ref[0]);
 		});
-	return new Map([...tagMap.entries()]
-		.filter(arr => semver.valid(arr[0]))
-		.sort((a, b) => semver.compare(a[0], b[0]))
-		.reverse());
+	return new Map([...tagMap.entries()]);
 };
 
+const filterTags = parseTags(tags)
+		.filter(arr => semver.valid(arr[0]))
+		.sort((a, b) => semver.compare(a[0], b[0]))
+		.reverse();
+
 const get = repo => new Promise((resolve, reject) => {
+	lsRemoteTags(repo)
+		.then(tags => resolve(filterTags(tags)))
+		.catch(err => reject(err));
+});
+
+const getAll = repo => new Promise((resolve, reject) => {
 	lsRemoteTags(repo)
 		.then(tags => resolve(parseTags(tags)))
 		.catch(err => reject(err));
@@ -35,5 +43,6 @@ const latest = repo => new Promise((resolve, reject) => {
 
 module.exports = {
 	get,
+	getAll,
 	latest,
 };
