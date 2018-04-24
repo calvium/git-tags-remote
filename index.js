@@ -18,7 +18,7 @@ const parseTags = (tags) => {
 	return new Map([...tagMap.entries()]);
 };
 
-const filterTags = parseTags(tags)
+const filterTags = (tags) => parseTags(tags)
 		.filter(arr => semver.valid(arr[0]))
 		.sort((a, b) => semver.compare(a[0], b[0]))
 		.reverse();
