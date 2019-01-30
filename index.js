@@ -11,6 +11,7 @@ const lsRemoteTags = repo => new Promise((resolve, reject) => {
 const parseTags = (tags) => {
 	const tagMap = new Map();
 	tags.split('\n')
+		.filter(Boolean)
 		.forEach((str) => {
 			const ref = str.split(/\t/);
 			tagMap.set(ref[1].split('/')[2].replace(/\^\{\}$/, ''), ref[0]);
